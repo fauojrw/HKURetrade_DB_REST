@@ -1,0 +1,46 @@
+CREATE TABLE "User" (
+    UID SERIAL PRIMARY KEY,  -- Use SERIAL for auto-incrementing
+    email TEXT,
+    name TEXT,
+    rating INTEGER
+);
+
+CREATE TABLE Buyer (
+    UID INTEGER PRIMARY KEY,
+    FOREIGN KEY (UID) REFERENCES "User"(UID)  -- Reference to "User" table
+);
+
+CREATE TABLE Seller (
+    UID INTEGER PRIMARY KEY,
+    FOREIGN KEY (UID) REFERENCES "User"(UID)  -- Reference to "User" table
+);
+
+CREATE TABLE Commodity (
+    CID SERIAL PRIMARY KEY,  -- Use SERIAL for auto-incrementing
+    Seller_UID INTEGER,
+    price REAL,
+    text_info TEXT,
+    FOREIGN KEY (Seller_UID) REFERENCES Seller(UID)
+);
+
+CREATE TABLE Pictures (
+    CID INTEGER,
+    pictures BYTEA,  -- Use BYTEA for binary data (images)
+    PRIMARY KEY (CID),
+    FOREIGN KEY (CID) REFERENCES Commodity(CID)
+);
+
+CREATE TABLE Buyer_buy_Commodity (
+    Buyer_UID INTEGER,
+    Seller_UID INTEGER,
+    Commodity_CID INTEGER,
+    rate INTEGER,
+    pay_time TIMESTAMP,  -- Use TIMESTAMP for date and time values
+    has_paid BOOLEAN,  -- Use BOOLEAN for true/false values (0 or 1)
+    collect_time TIMESTAMP,  -- Use TIMESTAMP for date and time values
+    has_collected BOOLEAN,  -- Use BOOLEAN for true/false values (0 or 1)
+    PRIMARY KEY (Buyer_UID, Seller_UID, Commodity_CID),
+    FOREIGN KEY (Buyer_UID) REFERENCES Buyer(UID),
+    FOREIGN KEY (Seller_UID) REFERENCES Seller(UID),
+    FOREIGN KEY (Commodity_CID) REFERENCES Commodity(CID)
+);

@@ -1,0 +1,23 @@
+        dbHelper.connect(new DatabaseHelper.VolleyCallback() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                // Handle the successful response here
+                Toast.makeText(MainActivity.this, "Connection successful!", Toast.LENGTH_SHORT).show();
+                // You can now use the 'result' JSONObject here (e.g., parse and display data)
+            }
+
+            @Override
+            public void onError(String error) {
+                // Handle the error here
+                Toast.makeText(MainActivity.this, "Connection failed: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Disconnect when activity is destroyed
+        dbHelper.disconnect();
+    }
+}
