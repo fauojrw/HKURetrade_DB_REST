@@ -5,12 +5,25 @@ from flask import request
 
 app = Flask(__name__)
 
+@app.route('/test')
+def test_route():
+    return 'Hello, World!'
+
+
 # Insertion (Create)
 @app.route('/users', methods=['POST'])
 def create_user():
-    return {"keju": "zhuang"}
-    # Implementation for creating a user
-    pass
+    # name, email, rating - 0
+    con = sqlite3.connect('hku_retrade.db')
+    name = request.form['name']
+    email = request.form['email']
+
+    insertQuery = "INSERT INTO User (name, email, rating) values (?, ?, 0);"
+    con.execute(insertQuery, (name, email))
+    con.commit()
+    con.close()
+
+    return {"status": "1"} # successful
 
 @app.route('/buyers', methods=['POST'])
 def create_buyer():
